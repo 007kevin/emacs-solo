@@ -97,12 +97,12 @@
   ;; won't ask for encoding (because undecided-unix) every single keystroke
   (modify-coding-system-alist 'file "" 'utf-8)
 
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 105)
+  (set-face-attribute 'default nil :family "MesloLGS NF" :height 100)
 
   (when (eq system-type 'darwin)
     (setq insert-directory-program "gls")
     (setq mac-command-modifier 'meta)
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 140))
+    (set-face-attribute 'default nil :family "MesloLGS NF" :height 130))
 
   ;; Save manual customizations to other file than init.el
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -1439,14 +1439,14 @@ and restart Flymake to apply the changes."
   (modus-themes-mixed-fonts nil)
   (modus-themes-prompts '(bold intense))
   (modus-themes-common-palette-overrides
-   `((bg-main "#292D3E")
+   `((bg-main "#1c1f2b")
      (bg-active bg-main)
      (fg-main "#EEFFFF")
      (fg-active fg-main)
      (fg-mode-line-active "#A6Accd")
-     (bg-mode-line-active "#232635")
+     (bg-mode-line-active "#383b49")
      (fg-mode-line-inactive "#676E95")
-     (bg-mode-line-inactive "#282c3d")
+     (bg-mode-line-inactive "#242736")
      ;; (border-mode-line-active "#676E95")
      ;; (border-mode-line-inactive bg-dim)
      (border-mode-line-active nil)
@@ -1465,8 +1465,8 @@ and restart Flymake to apply the changes."
      (fg-line-number-active fg-main)
      (fg-line-number-inactive "gray50")
      (bg-line-number-active unspecified)
-     (bg-line-number-inactive "#292D3E")
-     (fringe "#292D3E")
+     (bg-line-number-inactive "#1c1f2b")
+     (fringe "#1c1f2b")
 
      (fg-heading-0 "#82aaff")
      (fg-heading-1 "#82aaff")
