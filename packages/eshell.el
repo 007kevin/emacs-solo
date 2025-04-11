@@ -8,7 +8,24 @@
 (use-package eshell
   :ensure nil
   :defer t
+  :bind
+  (("<f1>" . eshell-here))
   :config
+  (defun eshell-here (&optional directory)
+  "Go to eshell and set current directory to the buffer's directory. If already
+on eshell, go to last buffer."
+  (interactive)
+  (if (and (not directory) (equal major-mode 'eshell-mode))
+      (previous-buffer)
+    (let* ((dir (file-name-directory (or directory (buffer-file-name) default-directory))))
+      (eshell)
+      (when (not (equal (expand-file-name (concat (eshell/pwd) "/")) (expand-file-name dir)))
+        (progn (eshell/pushd ".")
+               (cd dir)
+               (goto-char (point-max))
+               (eshell-kill-input)
+               (eshell-send-input))))))
+  
   (defun emacs-solo/eshell-pick-history ()
     "Show Eshell history in a completing-read picker and insert the selected command."
     (interactive)

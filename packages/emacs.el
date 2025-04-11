@@ -21,7 +21,10 @@
    ("RET" . newline-and-indent)
    ("C-z" . nil)
    ("C-x C-z" . nil)
-   ("C-x C-k RET" . nil))
+   ("C-x C-k RET" . nil)
+   ("C-x 2" . (lambda () (interactive) (split-window-vertically) (other-window 1)))
+   ("C-x 3" . (lambda () (interactive) (split-window-horizontally) (other-window 1)))
+   )
   :custom
   (ad-redefinition-action 'accept)
   (column-number-mode nil)
@@ -187,6 +190,10 @@
   (setq eshell-directory-name (expand-file-name "eshell/" user-cache-directory))
 
   ;; Redirect autosave
+  ;; TODO
+
+  
+  
 
 
   ;; Runs 'private.el' after Emacs inits
