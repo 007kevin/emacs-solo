@@ -11,5 +11,4 @@
   :init
   (add-to-list 'auto-mode-alist '("\\.env\\'" . conf-mode)))
 
-(provide 'packages/conf-mode)
 ;;; conf-mode.el ends here

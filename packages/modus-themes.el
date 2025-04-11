@@ -88,5 +88,4 @@
   :init
   (load-theme 'modus-vivendi-tinted t))
 
-(provide 'packages/modus-themes)
 ;;; modus-themes.el ends here

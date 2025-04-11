@@ -206,5 +206,4 @@ Otherwise, open the repository's main page."
             (goto-char (point-min)))))))
   (global-set-key (kbd "C-x v =") 'emacs-solo/vc-diff-on-current-hunk))
 
-(provide 'packages/vc)
 ;;; vc.el ends here

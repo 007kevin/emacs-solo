@@ -52,5 +52,4 @@ If SECOND is non-nil, separate the results with a newline."
              (goto-char (point-min))
              (read-only-mode 1))))))))
 
-(provide 'packages/emacs-solo-weather)
 ;;; emacs-solo-weather.el ends here

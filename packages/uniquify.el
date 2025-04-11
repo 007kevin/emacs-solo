@@ -12,5 +12,4 @@
   (setq uniquify-strip-common-suffix t)
   (setq uniquify-after-kill-buffer-p t))
 
-(provide 'packages/uniquify)
 ;;; uniquify.el ends here

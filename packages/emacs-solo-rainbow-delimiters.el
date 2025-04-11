@@ -40,5 +40,4 @@ Opening and closing delimiters will have matching colors."
 
   (add-hook 'prog-mode-hook #'emacs-solo/rainbow-delimiters))
 
-(provide 'packages/emacs-solo-rainbow-delimiters)
 ;;; emacs-solo-rainbow-delimiters.el ends here

@@ -14,5 +14,4 @@
   :config
   (add-to-list 'treesit-language-source-alist '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src")))
 
-(provide 'packages/rust-ts-mode)
 ;;; rust-ts-mode.el ends here

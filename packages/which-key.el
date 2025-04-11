@@ -19,5 +19,4 @@
   (setq which-key-add-column-padding 1)
   (setq which-key-max-description-length 40))
 
-(provide 'packages/which-key)
 ;;; which-key.el ends here

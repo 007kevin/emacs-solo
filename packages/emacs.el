@@ -163,6 +163,31 @@
   ;; So rebase from eshell opens with a bit of syntax highlight
   (add-to-list 'auto-mode-alist '("/git-rebase-todo\\'" . conf-mode))
 
+  ;; Create a cache directory if it doesn't exist
+  (defvar user-cache-directory (expand-file-name ".local/cache" user-emacs-directory))
+  (make-directory user-cache-directory t)
+
+  ;; Redirect auto-save-list
+  (setq auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-cache-directory))
+
+  ;; Redirect eln-cache (native compilation cache)
+  (when (fboundp 'startup-redirect-eln-cache)
+    (startup-redirect-eln-cache (expand-file-name "eln-cache/" user-cache-directory)))
+  ;; For older Emacs versions that don't have startup-redirect-eln-cache
+  (when (boundp 'native-comp-eln-load-path)
+    (setcar native-comp-eln-load-path (expand-file-name "eln-cache/" user-cache-directory)))
+
+  ;; Redirect history
+  (setq savehist-file (expand-file-name "history" user-cache-directory))
+
+  ;; Redirect recentf
+  (setq recentf-save-file (expand-file-name "recentf" user-cache-directory));; Redirect auto-save-list
+
+  ;; Redirect eshell
+  (setq eshell-directory-name (expand-file-name "eshell/" user-cache-directory))
+
+  ;; Redirect autosave
+
 
   ;; Runs 'private.el' after Emacs inits
   (add-hook 'after-init-hook
@@ -204,5 +229,4 @@
 
   (message (emacs-init-time)))
 
-(provide 'packages/emacs)
 ;;; emacs.el ends here

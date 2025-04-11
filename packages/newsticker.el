@@ -26,5 +26,4 @@
           (start-process "mpv-video" nil "mpv" (format "https://www.youtube.com/watch?v=%s" video-id))
           (message "Playing with mpv: %s" video-id))))))
 
-(provide 'packages/newsticker)
 ;;; newsticker.el ends here

@@ -107,5 +107,4 @@
           "elm" "irssi" "nmtui-connect" "nethack" "vim" "alsamixer" "nvim" "w3m"
           "ncmpcpp" "newsbeuter" "nethack" "mutt")))
 
-(provide 'packages/eshell)
 ;;; eshell.el ends here

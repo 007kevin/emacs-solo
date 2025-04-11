@@ -48,5 +48,4 @@
   ;; (add-hook 'newsticker-treeview-item-mode-hook 'emacs-solo/timed-center-visual-fill-on)
   )
 
-(provide 'packages/emacs-solo-olivetti)
 ;;; emacs-solo-olivetti.el ends here

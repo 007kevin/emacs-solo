@@ -13,5 +13,4 @@
   (show-paren-style 'mixed)
   (show-paren-context-when-offscreen t)) ;; show matches within window splits
 
-(provide 'packages/paren)
 ;;; paren.el ends here

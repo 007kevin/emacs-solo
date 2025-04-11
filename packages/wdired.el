@@ -12,5 +12,4 @@
   (setq wdired-allow-to-change-permissions t)
   (setq wdired-create-parent-directories t))
 
-(provide 'packages/wdired)
 ;;; wdired.el ends here

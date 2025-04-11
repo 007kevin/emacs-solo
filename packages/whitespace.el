@@ -13,5 +13,4 @@
   ;; (remove-hook 'before-save-hook #'whitespace-cleanup)
   )
 
-(provide 'packages/whitespace)
 ;;; whitespace.el ends here

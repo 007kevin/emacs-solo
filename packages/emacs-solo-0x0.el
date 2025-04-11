@@ -34,5 +34,4 @@
       (message "The URL is %s" url)
       (kill-new url))))
 
-(provide 'packages/emacs-solo-0x0)
 ;;; emacs-solo-0x0.el ends here

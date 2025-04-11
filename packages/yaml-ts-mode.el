@@ -12,5 +12,4 @@
   :config
   (add-to-list 'treesit-language-source-alist '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src")))
 
-(provide 'packages/yaml-ts-mode)
 ;;; yaml-ts-mode.el ends here

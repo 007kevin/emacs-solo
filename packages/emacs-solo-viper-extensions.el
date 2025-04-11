@@ -245,5 +245,4 @@ A compound word includes letters, numbers, `-`, and `_`."
   (define-key viper-vi-global-user-map (kbd "] c") 'emacs-solo/goto-next-hunk)
   (define-key viper-vi-global-user-map (kbd "[ c") 'emacs-solo/goto-previous-hunk))
 
-(provide 'packages/emacs-solo-viper-extensions)
 ;;; emacs-solo-viper-extensions.el ends here

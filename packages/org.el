@@ -39,5 +39,4 @@
   (setq org-ellipsis " ▼ ")
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil))
 
-(provide 'packages/org)
 ;;; org.el ends here

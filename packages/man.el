@@ -11,5 +11,4 @@
   :config
   (setq Man-notify-method 'pushy)) ; does not obey `display-buffer-alist'
 
-(provide 'packages/man)
 ;;; man.el ends here

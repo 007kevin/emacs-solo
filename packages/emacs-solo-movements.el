@@ -113,5 +113,4 @@ Also first tries the local node_modules/.bin and later the global bin."
 
   (global-set-key (kbd "C-x 4 t") #'emacs-solo/transpose-split))
 
-(provide 'packages/emacs-solo-movements)
 ;;; emacs-solo-movements.el ends here

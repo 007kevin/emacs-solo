@@ -22,5 +22,4 @@ buffer is not visiting a file."
                            (completing-read "Find file(as root): ")))
       (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))))
 
-(provide 'packages/emacs-solo-sudo-edit)
 ;;; emacs-solo-sudo-edit.el ends here

@@ -3,24 +3,24 @@
 
 ;;; Code:
 
-(defun require-all-packages ()
-  "Add packages directory to load-path and require all packages in it."
+(defun load-packages-directory ()
+  "Load all Emacs Lisp files in the 'packages' directory relative to the Emacs directory."
   (interactive)
-  (let* ((package-dir (expand-file-name "packages" user-emacs-directory)))
-    ;; Add the packages directory to load-path
-    (add-to-list 'load-path package-dir)
+  (let* ((emacs-dir (file-name-directory (or user-init-file load-file-name)))
+         (packages-dir (expand-file-name "packages" emacs-dir))
+         (files (and (file-directory-p packages-dir)
+                     (directory-files packages-dir t "\\.el$"))))
+    (if files
+        (dolist (file files)
+          (message "Loading %s..." file)
+          (condition-case err
+              (progn
+                (load-file file)
+                (message "Loaded %s successfully" file))
+            (error
+             (message "Error loading %s: %s" file (error-message-string err)))))
+      (message "Packages directory not found at %s" packages-dir))))
 
-    ;; Require each package
-    (dolist (file (directory-files package-dir t "\\.el$"))
-      (let* ((file-name (file-name-nondirectory file))
-             (package-name (file-name-sans-extension file-name))
-             ;; Keep hyphens in the feature name
-             (feature-name (intern (concat "packages/" package-name))))
-        (message "Loading %s..." feature-name)
-        (condition-case err
-            (require feature-name)
-          (error (message "Error loading %s: %s" feature-name err)))))))
+(load-packages-directory)
 
-;; Call the function to load all packages
-(require-all-packages)
 ;;; init.el ends here

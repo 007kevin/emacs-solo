@@ -18,6 +18,4 @@
   (advice-add 'compilation-start :after #'emacs-solo/ignore-compilation-status)
 
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter))
-
-(provide 'packages/compile)
 ;;; compile.el ends here

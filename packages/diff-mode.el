@@ -15,5 +15,4 @@
   (setq diff-font-lock-syntax 'hunk-also)
   (setq diff-font-lock-prettify nil))
 
-(provide 'packages/diff-mode)
 ;;; diff-mode.el ends here

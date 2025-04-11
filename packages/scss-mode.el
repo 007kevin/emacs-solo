@@ -9,5 +9,4 @@
   :mode "\\.sass\\'"
   :defer t)
 
-(provide 'packages/scss-mode)
 ;;; scss-mode.el ends here

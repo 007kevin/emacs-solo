@@ -30,5 +30,4 @@
   (minibuffer-depth-indicate-mode 1)
   (minibuffer-electric-default-mode 1))
 
-(provide 'packages/minibuffer)
 ;;; minibuffer.el ends here

@@ -13,5 +13,4 @@
               ("C-c ^ n" . smerge-next)
               ("C-c ^ p" . smerge-previous)))
 
-(provide 'packages/smerge-mode)
 ;;; smerge-mode.el ends here

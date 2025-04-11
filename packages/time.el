@@ -41,5 +41,4 @@
      ("Australia/Sydney" "Sydney")
      ("Pacific/Auckland" "Auckland"))))
 
-(provide 'packages/time)
 ;;; time.el ends here

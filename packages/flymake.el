@@ -38,5 +38,4 @@ and restart Flymake to apply the changes."
              (if flymake-show-diagnostics-at-end-of-line
                  "Enabled" "Disabled"))))
 
-(provide 'packages/flymake)
 ;;; flymake.el ends here

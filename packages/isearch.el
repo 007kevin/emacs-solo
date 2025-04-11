@@ -25,5 +25,4 @@
   ;; does a great job of 'copying the current word under cursor'.
   (define-key isearch-mode-map (kbd "M-w") 'isearch-copy-selected-word))
 
-(provide 'packages/isearch)
 ;;; isearch.el ends here

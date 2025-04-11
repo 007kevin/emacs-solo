@@ -56,5 +56,4 @@
   :hook
   (prog-mode . (lambda () (run-at-time "1 sec" nil #'emacs-solo/highlight-keywords-mode-on))))
 
-(provide 'packages/emacs-solo-highlight-keywords-mode)
 ;;; emacs-solo-highlight-keywords-mode.el ends here

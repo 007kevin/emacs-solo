@@ -46,5 +46,4 @@
 
   (add-hook 'after-init-hook #'emacs-solo/transparency-set))
 
-(provide 'packages/emacs-solo-transparency)
 ;;; emacs-solo-transparency.el ends here

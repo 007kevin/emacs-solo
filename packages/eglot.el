@@ -34,5 +34,4 @@
          ("C-c l r" . eglot-rename)
          ("C-c l f" . eglot-format)))
 
-(provide 'packages/eglot)
 ;;; eglot.el ends here

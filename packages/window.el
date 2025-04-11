@@ -42,5 +42,4 @@
       (slot . 2))
      )))
 
-(provide 'packages/window)
 ;;; window.el ends here

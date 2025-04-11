@@ -62,5 +62,4 @@ Windows are labeled starting from the top-left window and proceeding top to bott
 
   (global-set-key (kbd "M-O") #'emacs-solo-ace-window/quick-window-jump))
 
-(provide 'packages/emacs-solo-ace-window)
 ;;; emacs-solo-ace-window.el ends here

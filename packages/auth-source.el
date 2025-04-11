@@ -17,6 +17,4 @@
   ;; Use `pass` as an auth-source
   (when (file-exists-p "~/.password-store")
     (auth-source-pass-enable)))
-
-(provide 'packages/auth-source)
 ;;; auth-source.el ends here

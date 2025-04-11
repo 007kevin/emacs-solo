@@ -39,5 +39,4 @@ If a region is selected, prompt for additional input and pass it as a query."
           (term-send-raw-string (string-join args " "))
           (term-send-raw-string "\n"))))))
 
-(provide 'packages/emacs-solo-ollama)
 ;;; emacs-solo-ollama.el ends here

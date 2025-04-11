@@ -14,5 +14,4 @@
   (add-to-list 'treesit-language-source-alist '(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
   (unbind-key "M-." typescript-ts-base-mode-map))
 
-(provide 'packages/typescript-ts-mode)
 ;;; typescript-ts-mode.el ends here

@@ -144,5 +144,4 @@ Marks lines as added, deleted, or changed."
 
   (add-hook 'after-init-hook #'emacs-solo/git-gutter-on))
 
-(provide 'packages/emacs-solo-gutter)
 ;;; emacs-solo-gutter.el ends here

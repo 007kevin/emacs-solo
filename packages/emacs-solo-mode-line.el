@@ -64,5 +64,4 @@
 
   (add-hook 'after-change-major-mode-hook 'emacs-solo/purge-minor-modes))
 
-(provide 'packages/emacs-solo-mode-line)
 ;;; emacs-solo-mode-line.el ends here

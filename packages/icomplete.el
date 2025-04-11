@@ -323,5 +323,4 @@ away from the bottom.  Counts wrapped lines as real lines."
 ;; end use-package
 )
 
-(provide 'packages/icomplete)
 ;;; icomplete.el ends here

@@ -12,5 +12,4 @@
   :config
   (add-to-list 'treesit-language-source-alist '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
 
-(provide 'packages/dockerfile-ts-mode)
 ;;; dockerfile-ts-mode.el ends here

@@ -90,5 +90,4 @@ you can later apply as a patch after reviewing the changes."
             (multi-file-replace-regexp-as-diff files from to delimited))
         (message "No files found in marked items.")))))
 
-(provide 'packages/emacs-solo-replace-regexp-as-diff)
 ;;; emacs-solo-replace-regexp-as-diff.el ends here

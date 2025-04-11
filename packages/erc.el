@@ -30,5 +30,4 @@
               (expand-file-name "cert.pem" user-emacs-directory)
               (expand-file-name "cert.pem" user-emacs-directory)))))
 
-(provide 'packages/erc)
 ;;; erc.el ends here

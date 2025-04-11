@@ -18,5 +18,4 @@
 
   (add-hook 'prog-mode-hook #'emacs-solo/prefer-tabs))
 
-(provide 'packages/emacs-solo-hooks)
 ;;; emacs-solo-hooks.el ends here

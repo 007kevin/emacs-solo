@@ -43,5 +43,4 @@
   :bind (:map project-prefix-map
          ("P" . emacs-solo/find-projects-and-switch)))
 
-(provide 'packages/emacs-solo-project-select)
 ;;; emacs-solo-project-select.el ends here

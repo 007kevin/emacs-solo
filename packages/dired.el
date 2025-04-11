@@ -92,5 +92,4 @@
   '(progn
      (define-key dired-mode-map (kbd "C-<return>") 'emacs-solo/window-dired-open-directory))))
 
-(provide 'packages/dired)
 ;;; dired.el ends here

@@ -12,5 +12,4 @@
   :config
   (add-to-list 'treesit-language-source-alist '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")))
 
-(provide 'packages/toml-ts-mode)
 ;;; toml-ts-mode.el ends here

@@ -20,5 +20,4 @@
             (lambda ()
               (proced-toggle-auto-update 1))))
 
-(provide 'packages/proced)
 ;;; proced.el ends here

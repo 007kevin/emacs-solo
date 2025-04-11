@@ -16,5 +16,4 @@
      ("YouTube" . [simple-query "www.youtube.com/feed/subscriptions" "www.youtube.com/rnesults?search_query=" ""])
      ("ChatGPT" . [simple-query "https://chatgpt.com" "https://chatgpt.com/?q=" ""]))))
 
-(provide 'packages/webjump)
 ;;; webjump.el ends here

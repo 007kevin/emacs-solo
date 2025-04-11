@@ -15,5 +15,4 @@
   (ruby-indent-level 2)
   (ruby-indent-tabs-mode nil))
 
-(provide 'packages/ruby-ts-mode)
 ;;; ruby-ts-mode.el ends here

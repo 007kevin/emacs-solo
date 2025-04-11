@@ -10,5 +10,4 @@
   :defer
   :hook (after-init . electric-pair-mode))
 
-(provide 'packages/elec-pair)
 ;;; elec-pair.el ends here

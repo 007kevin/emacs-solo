@@ -10,5 +10,4 @@
   :init
   (global-eldoc-mode))
 
-(provide 'packages/eldoc)
 ;;; eldoc.el ends here

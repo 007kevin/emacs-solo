@@ -84,5 +84,4 @@
 
   (add-hook 'dired-after-readin-hook #'emacs-solo/dired-git-status-overlay))
 
-(provide 'packages/emacs-solo-dired-gutter)
 ;;; emacs-solo-dired-gutter.el ends here

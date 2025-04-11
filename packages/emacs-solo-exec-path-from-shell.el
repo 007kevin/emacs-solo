@@ -53,5 +53,4 @@
   (add-hook 'after-init-hook #'emacs-solo/set-exec-path-from-shell-PATH)
   (add-hook 'after-init-hook #'emacs-solo/fix-asdf-path))
 
-(provide 'packages/emacs-solo-exec-path-from-shell)
 ;;; emacs-solo-exec-path-from-shell.el ends here
