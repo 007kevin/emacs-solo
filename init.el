@@ -24,3 +24,4 @@
 (load-packages-directory)
 
 ;;; init.el ends here
+(put 'dired-find-alternate-file 'disabled nil)

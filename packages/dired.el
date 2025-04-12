@@ -8,88 +8,43 @@
 (use-package dired
   :ensure nil
   :bind
-  (("M-i" . emacs-solo/window-dired-vc-root-left))
+  ((:map dired-mode-map
+         ("d" . my/dired-dotfiles-toggle))
+   ("RET" . dired-find-alternate-file)
+   ("<f2>" . my/dired-jump-reuse))
   :custom
   (dired-dwim-target t)
-  (dired-guess-shell-alist-user
-   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
-     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
-     (".*" "xdg-open" "open")))
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-al --group-directories-first")
   (dired-hide-details-hide-absolute-location t)            ; EMACS-31
   :init
-  (defun emacs-solo/dired-rsync-copy (dest)
-  "Copy marked files in Dired to DEST using rsync async, with real-time processing of output."
-  (interactive
-   (list (expand-file-name (read-file-name "rsync to: "
-                                           (dired-dwim-target-directory)))))
-  (let* ((files (dired-get-marked-files nil current-prefix-arg))
-         (command (append '("rsync" "-hPur") (mapcar #'shell-quote-argument files) (list (shell-quote-argument dest))))
-         (buffer (get-buffer-create "*rsync*")))
-    (with-current-buffer buffer
-      (erase-buffer)
-      (insert "Running rsync...\n"))
+  (setq my-dired-switches-no-dotfiles   "-Bhl --group-directories-first -v")
+  (setq my-dired-switches-show-dotfiles "-Bhl --group-directories-first -v -A")
+  (setq dired-listing-switches my-dired-switches-no-dotfiles)
 
-    (defun rsync-process-filter (proc string)
-      (with-current-buffer (process-buffer proc)
-        (goto-char (point-max))
-        (insert string)
-        (goto-char (point-max))
-        (while (re-search-backward "\r" nil t)
-          (replace-match "\n" nil nil))))
-
-    (make-process
-     :name "dired-rsync"
-     :buffer buffer
-     :command command
-     :filter 'rsync-process-filter
-     :sentinel
-     (lambda (_proc event)
-       (when (string-match-p "finished" event)
-         (with-current-buffer buffer
-           (goto-char (point-max))
-           (insert "\n* rsync done *\n"))
-         (dired-revert)))
-     :stderr buffer)
-
-    (display-buffer buffer)
-    (message "rsync started...")))
-
-
-  (defun emacs-solo/window-dired-vc-root-left (&optional directory-path)
-    "Creates *Dired-Side* like an IDE side explorer"
+  (defun my/dired-dotfiles-toggle ()
+    "Show/hide dot-files"
     (interactive)
-    (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+    (when (equal major-mode 'dired-mode)
+      (if (equal dired-listing-switches my-dired-switches-no-dotfiles)
+          (progn
+            (dired-sort-other my-dired-switches-show-dotfiles)
+            (setq dired-listing-switches my-dired-switches-show-dotfiles))
+        (progn
+          (dired-sort-other my-dired-switches-no-dotfiles)
+          (setq dired-listing-switches my-dired-switches-no-dotfiles))
+        )))
 
-    (let ((dir (if directory-path
-                   (dired-noselect directory-path)
-         (if (eq (vc-root-dir) nil)
-                     (dired-noselect default-directory)
-                   (dired-noselect (vc-root-dir))))))
-
-      (display-buffer-in-side-window
-       dir `((side . left)
-         (slot . 0)
-         (window-width . 30)
-         (window-parameters . ((no-other-window . t)
-                   (no-delete-other-windows . t)
-                   (mode-line-format . (" "
-                            "%b"))))))
-      (with-current-buffer dir
-    (let ((window (get-buffer-window dir)))
-          (when window
-            (select-window window)
-        (rename-buffer "*Dired-Side*")
-        )))))
-
-  (defun emacs-solo/window-dired-open-directory ()
-    "Open the current directory in *Dired-Side* side window."
+  (defun my/not-root () (unless (string= dired-directory "/") t))
+  (defun my/dired-jump-reuse ()
     (interactive)
-    (emacs-solo/window-dired-vc-root-left (dired-get-file-for-visit)))
+    (if (and (derived-mode-p 'dired-mode)
+             (= (length (get-buffer-window-list)) 1))
+        (if (my/not-root)
+            (let ((dir (expand-file-name dired-directory)))
+              (find-alternate-file "..")
+              (dired-goto-file dir)))
+    (dired-jump)))
 
-  (eval-after-load 'dired
-  '(progn
-     (define-key dired-mode-map (kbd "C-<return>") 'emacs-solo/window-dired-open-directory))))
+  )
 
 ;;; dired.el ends here
