@@ -6,12 +6,13 @@
 ;;; Code:
 
 (use-package dired
+  :after emacs
   :ensure nil
   :bind
-  ((:map dired-mode-map
-         ("d" . my/dired-dotfiles-toggle))
-   ("RET" . dired-find-alternate-file)
-   ("<f2>" . my/dired-jump-reuse))
+  (("<f2>" . my/dired-jump-reuse)
+    ("RET" . dired-find-alternate-file)
+    :map dired-mode-map
+    ("d" . my/dired-dotfiles-toggle))
   :custom
   (dired-dwim-target t)
   (dired-kill-when-opening-new-dired-buffer t)

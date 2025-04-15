@@ -66,3 +66,4 @@ custom-vars.el
 private.el
 saveplace
 cert.pem
+.local
