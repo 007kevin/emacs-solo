@@ -95,6 +95,11 @@
   (grep-command "rg -nS --no-heading ")
   (grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "build" "dist"))
+  ;; For vertico compatibility
+  (enable-recursive-minibuffers t)
+  (read-extended-command-predicate #'command-completion-default-include-p)
+   (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt)))
   :config
   ;; Makes everything accept utf-8 as default, so buffers with tsx and so
   ;; won't ask for encoding (because undecided-unix) every single keystroke
@@ -192,8 +197,8 @@
   ;; Redirect autosave
   ;; TODO
 
-  
-  
+
+
 
 
   ;; Runs 'private.el' after Emacs inits
