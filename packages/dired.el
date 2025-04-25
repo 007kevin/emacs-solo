@@ -15,7 +15,7 @@
     ("d" . my/dired-dotfiles-toggle))
   :custom
   (dired-dwim-target t)
-  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-kill-when-opening-new-dired-buffer nil)
   (dired-hide-details-hide-absolute-location t)            ; EMACS-31
   :init
   (setq my-dired-switches-no-dotfiles   "-Bhl --group-directories-first -v")
@@ -45,7 +45,6 @@
               (find-alternate-file "..")
               (dired-goto-file dir)))
     (dired-jump)))
-
   )
 
 ;;; dired.el ends here

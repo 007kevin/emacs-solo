@@ -7,11 +7,15 @@
 
 (use-package isearch
   :ensure nil
+  :bind (:map isearch-mode-map
+         ("C-n" . isearch-repeat-forward)
+         ("C-p" . isearch-repeat-backward))
   :config
   (setq isearch-lazy-count t)
   (setq lazy-count-prefix-format "(%s/%s) ")
   (setq lazy-count-suffix-format nil)
   (setq search-whitespace-regexp ".*?")
+  (setq isearch-wrap-function 'ignore)
 
   (defun isearch-copy-selected-word ()
     "Copy the current `isearch` selection to the kill ring."

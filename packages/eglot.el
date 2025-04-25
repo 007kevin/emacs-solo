@@ -14,6 +14,7 @@
   (eglot-prefer-plaintext t)
   (jsonrpc-event-hook nil)
   (eglot-code-action-indications nil) ;; EMACS-31 -- annoying as hell
+  (eglot-highlight-symbol-at-point t)
   :init
   (fset #'jsonrpc--log-event #'ignore)
 
@@ -25,7 +26,16 @@
   (add-hook 'prog-mode-hook #'emacs-solo/eglot-setup)
 
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
+    (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
+    (add-to-list 'eglot-server-programs '((go-mode go-ts-mode) "gopls")))
+
+  :config
+  (custom-set-faces
+   '(eglot-highlight-symbol-face
+     ((t (:background "#2a3f5f"
+          :foreground nil
+          :distant-foreground nil
+          :weight semi-bold)))))
 
   :bind (:map
          eglot-mode-map

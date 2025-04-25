@@ -1,3 +1,4 @@
+
 # Gitignore file
 # Remove backup files
 *#
@@ -65,4 +66,4 @@ custom-vars.el
 private.el
 saveplace
 cert.pem
-.local
+/.local/*
