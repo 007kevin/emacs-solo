@@ -3,6 +3,18 @@
 
 ;;; Code:
 
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("gnu" . "https://elpa.gnu.org/packages/")))
+
+(setq package-archive-priorities
+      '(("melpa" .  4)
+        ("melpa-stable" . 3)
+        ("org" . 2)
+        ("gnu" . 1)))
+
 (defvar user-external-directory (expand-file-name "external" user-emacs-directory))
 (add-to-list 'load-path user-external-directory)
 

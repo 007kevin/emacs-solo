@@ -5,11 +5,27 @@
 
 ;;; Code:
 
+(use-package shell-pop
+  :ensure t
+  :custom
+  (shell-pop-window-position "full")
+  (shell-pop-shell-type '("eshell" "*eshell*" (lambda () (eshell))))
+  (shell-pop-term-shell "eshell")
+  :config
+  (defun emacs-solo/shell-pop ()
+    "Shell pop with cd to working dir."
+    (interactive)
+    ;; Overriding shell-pop-autocd-to-working-dir with `prefix' value.
+    (let ((shell-pop-autocd-to-working-dir t))
+      (if (string= (buffer-name) shell-pop-last-shell-buffer-name)
+          (shell-pop-out)
+        (shell-pop-up shell-pop-last-shell-buffer-index)))))
+
 (use-package eshell
   :ensure nil
   :defer t
   :bind
-  (("<f1>" . eshell-here))
+  (("<f1>" . emacs-solo/shell-pop))
   :config
   (defun eshell-here (&optional directory)
   "Go to eshell and set current directory to the buffer's directory. If already
@@ -25,7 +41,7 @@ on eshell, go to last buffer."
                (goto-char (point-max))
                (eshell-kill-input)
                (eshell-send-input))))))
-  
+
   (defun emacs-solo/eshell-pick-history ()
     "Show Eshell history in a completing-read picker and insert the selected command."
     (interactive)
