@@ -30,17 +30,17 @@
   (defun eshell-here (&optional directory)
   "Go to eshell and set current directory to the buffer's directory. If already
 on eshell, go to last buffer."
-  (interactive)
-  (if (and (not directory) (equal major-mode 'eshell-mode))
-      (previous-buffer)
-    (let* ((dir (file-name-directory (or directory (buffer-file-name) default-directory))))
-      (eshell)
-      (when (not (equal (expand-file-name (concat (eshell/pwd) "/")) (expand-file-name dir)))
-        (progn (eshell/pushd ".")
-               (cd dir)
-               (goto-char (point-max))
-               (eshell-kill-input)
-               (eshell-send-input))))))
+    (interactive)
+    (if (and (not directory) (equal major-mode 'eshell-mode))
+        (previous-buffer)
+      (let* ((dir (file-name-directory (or directory (buffer-file-name) default-directory))))
+        (eshell)
+        (when (not (equal (expand-file-name (concat (eshell/pwd) "/")) (expand-file-name dir)))
+          (progn (eshell/pushd ".")
+                 (cd dir)
+                 (goto-char (point-max))
+                 (eshell-kill-input)
+                 (eshell-send-input))))))
 
   (defun emacs-solo/eshell-pick-history ()
     "Show Eshell history in a completing-read picker and insert the selected command."
@@ -84,56 +84,61 @@ on eshell, go to last buffer."
                                (eshell/clear 1)
                                (eshell-send-input)))))
 
-  (require 'vc)
-  (require 'vc-git)
-  (setopt eshell-prompt-function
-        (lambda ()
-          (concat
-           "┌─("
-           (if (> eshell-last-command-status 0)
-               "❌"
-             "🐂")
-           " " (number-to-string eshell-last-command-status)
-           ")──("
-           "🧘 " (or (file-remote-p default-directory 'user) (user-login-name))
-           ")──("
-           "💻 " (or (file-remote-p default-directory 'host) (system-name))
-           ")──("
-           "🕝 " (format-time-string "%H:%M:%S" (current-time))
-           ")──("
-           "📁 "
-           (concat (if (>= (length (eshell/pwd)) 40)
-                       (concat "..." (car (last (butlast (split-string (eshell/pwd) "/") 0))))
-                     (abbreviate-file-name (eshell/pwd))))
-           ")\n"
+  (defun p10k-lean-eshell-prompt ()
+    "A p10k lean style prompt for Eshell with parent directories."
+    (let* ((exit-status eshell-last-command-status)
+           (success (= exit-status 0))
 
-           (when (and (fboundp 'vc-git-root) (vc-git-root default-directory))
-             (concat
-              "├─(🌿 " (car (vc-git-branches))
-              (let* ((branch (car (vc-git-branches)))
-                     (behind (string-to-number
-                              (shell-command-to-string
-                               (concat "git rev-list --count HEAD..origin/" branch)))))
-                (if (> behind 0)
-                    (concat "  ⬇️ " (number-to-string behind))))
+           ;; Define colors
+           (dir-color "#56b6c2")     ; Cyan for directory
+           (git-color "#c678dd")     ; Purple for git info
+           (good-color "#98c379")    ; G3reen for success
+           (bad-color "#e06c75")     ; Red for failure
 
-              (let ((modified (length (split-string
-                                       (shell-command-to-string
-                                        "git ls-files --modified") "\n" t)))
-                    (untracked (length (split-string
-                                        (shell-command-to-string
-                                         "git ls-files --others --exclude-standard") "\n" t))))
-                (concat
-                 (if (> modified 0)
-                     (concat "  ✏️ " (number-to-string modified)))
-                 (if (> untracked 0)
-                     (concat "  📄 " ))))
-              ")\n"))
-           "└─➜ ")))
+           ;; Get shortened path with parent directories
+           (full-dir default-directory)
+           (home-dir (expand-file-name "~"))
+           (path-relative-to-home
+            (if (string-prefix-p home-dir full-dir)
+                (concat "~" (substring full-dir (length home-dir)))
+              full-dir))
 
-  (setq eshell-prompt-regexp "└─➜ ")
+           ;; Format the path
+           (formatted-path
+            (propertize path-relative-to-home 'face `(:foreground ,dir-color)))
 
-  (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color")))
+           ;; Git information
+           (git-branch (when (locate-dominating-file default-directory ".git")
+                         (condition-case nil
+                             (let ((branch (car (process-lines "git" "symbolic-ref" "--short" "HEAD"))))
+                               (concat " " (propertize branch 'face `(:foreground ,git-color :weight normal))))
+                           (error "")))))
+
+      ;; Construct the prompt
+      (concat
+       ;; Directory path
+       formatted-path
+
+       ;; Git branch (if we're in a git repo)
+       (or git-branch "")
+
+       ;; Prompt character (changes color based on previous command status)
+       " "
+       (propertize "❯" 'face `(:foreground ,(if success good-color bad-color) :weight bold))
+       " ")))
+
+  ;; Set the prompt function
+  (setq eshell-prompt-function 'p10k-lean-eshell-prompt)
+
+  ;; Set the regexp for identifying the prompt
+  (setq eshell-prompt-regexp "^.* ❯ ")
+
+  (custom-set-faces '(eshell-prompt ((t nil))))
+
+
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (setenv "TERM" "xterm-256color")))
 
   (setq eshell-visual-commands
         '("vi" "screen" "top"  "htop" "btm" "less" "more" "lynx" "ncftp" "pine" "tin" "trn"

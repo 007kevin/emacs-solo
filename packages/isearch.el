@@ -70,21 +70,6 @@ with current isearch args."
 
   ;; when changing isearch direction, move to the other match immediately
   (setq isearch-repeat-on-direction-change t)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   )
 
 ;;; isearch.el ends here
