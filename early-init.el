@@ -47,6 +47,5 @@
 (setq frame-inhibit-implied-resize t
       frame-resize-pixelwise t)
 
-
 (provide 'early-init)
 ;;; early-init.el ends here

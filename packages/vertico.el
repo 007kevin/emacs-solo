@@ -43,8 +43,11 @@
   (defun consult-ripgrep-cwd ()
     (interactive )
     (consult-ripgrep default-directory))
-  
+
   (consult-customize
    consult-ripgrep
    consult-ripgrep-cwd
+   xref-find-references
    :preview-key "C-<return>"))
+
+;;; vertico.el ends here

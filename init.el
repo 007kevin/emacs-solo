@@ -3,6 +3,9 @@
 
 ;;; Code:
 
+(defvar user-external-directory (expand-file-name "external" user-emacs-directory))
+(add-to-list 'load-path user-external-directory)
+
 (defun load-packages-directory ()
   "Load all Emacs Lisp files in the 'packages' directory relative to the Emacs directory."
   (interactive)

@@ -9,6 +9,7 @@
 (use-package emacs-solo-project-select
   :ensure nil
   :no-require t
+  :bind (("C-c g" . project-find-file))
   :init
   (defvar emacs-solo-default-projects-folder "~/Projects"
     "Default folder to search for projects.")
