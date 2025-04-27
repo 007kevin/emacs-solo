@@ -77,9 +77,6 @@
   (switch-to-buffer-obey-display-actions t)
   (tab-always-indent 'complete)
   (tab-width 4)
-  (tab-bar-close-button-show nil)
-  (tab-bar-new-button-show nil)
-  (tab-bar-tab-hints t)
   (treesit-font-lock-level 4)
   (truncate-lines t)
   (undo-limit (* 13 160000))
@@ -98,9 +95,12 @@
   ;; For vertico compatibility
   (enable-recursive-minibuffers t)
   (read-extended-command-predicate #'command-completion-default-include-p)
-   (minibuffer-prompt-properties
-   '(read-only t cursor-intangible t face minibuffer-prompt)))
+  (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
   :config
+
+  ;; Don't use continuation character.
+  (setq-default fringe-indicator-alist (delq (assq 'continuation fringe-indicator-alist) fringe-indicator-alist))
+
   ;; Makes everything accept utf-8 as default, so buffers with tsx and so
   ;; won't ask for encoding (because undecided-unix) every single keystroke
   (modify-coding-system-alist 'file "" 'utf-8)
@@ -222,6 +222,19 @@
   (winner-mode)
   (xterm-mouse-mode 1)
   (file-name-shadow-mode 1) ; allows us to type a new path without having to delete the current one
+
+  (when (display-graphic-p)
+    ;; No title. See init.el for initial value.
+    (setq-default frame-title-format nil)
+    ;; Hide the cursor in inactive windows.
+    (setq cursor-in-non-selected-windows nil)
+    ;; Avoid native dialogs.
+    (setq use-dialog-box nil)
+    ;; Disable fringe
+    (set-fringe-mode 0))
+
+  ;; Don't use continuation character.
+  (setq-default fringe-indicator-alist (delq (assq 'continuation fringe-indicator-alist) fringe-indicator-alist))
 
   (with-current-buffer (get-buffer-create "*scratch*")
     (insert (format ";;

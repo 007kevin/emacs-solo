@@ -1,0 +1,13 @@
+# Target labels
+ libvterm
+# Source files and their labels
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/libvterm
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/libvterm.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/libvterm-complete.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-build.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-configure.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-download.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-install.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-mkdir.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-patch.rule
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/libvterm-prefix/src/libvterm-stamp/libvterm-update.rule

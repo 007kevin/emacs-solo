@@ -8,7 +8,9 @@
 (use-package isearch
   :after consult
   :ensure nil
-  :bind (:map isearch-mode-map
+  :bind (("C-s" . isearch-forward)
+         ("C-r" . isearch-backward)
+         :map isearch-mode-map
          ("C-s" . search-buffer-continue)
          ("C-r" . search-buffer-continue)
          ("C-n" . isearch-repeat-forward)

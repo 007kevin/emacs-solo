@@ -20,7 +20,12 @@
       (window-height . 0.25)
       (side . bottom)
       (slot . 0))
-     ("\\*\\([Hh]elp\\)\\*"
+     ("\\*\\([Cc]ompilation\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . 100)
+      (side . right)
+      (slot . 0))
+     ("\\*\\([Hh]elp\\|[Mm]agit\\)\\*"
       (display-buffer-in-side-window)
       (window-width . 75)
       (side . right)

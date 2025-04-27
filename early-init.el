@@ -5,11 +5,13 @@
 ;;
 ;;; Code:
 
-;; HACK: inscrease startup speed
+;; Match theme color early on (smoother transition).
+(add-to-list 'default-frame-alist '(background-color . "#1c1f2b"))
+
+;; HACK: increase startup speed
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6
       vc-handled-backends '(Git))
-
 
 ;; HACK: avoid being flashbanged
 (defun emacs-solo/avoid-initial-flash-of-light ()
@@ -39,7 +41,6 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'tooltip-mode) (tooltip-mode -1))
-
 
 ;; Resizing the Emacs frame can be a terribly expensive part of changing the
 ;; font. By inhibiting this, we easily halve startup times with fonts that are

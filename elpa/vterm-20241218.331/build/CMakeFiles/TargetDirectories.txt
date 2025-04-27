@@ -1,0 +1,5 @@
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/vterm-module.dir
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/libvterm.dir
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/run.dir
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/edit_cache.dir
+/Users/kevinkim/dotfiles/emacs/solo/elpa/vterm-20241218.331/build/CMakeFiles/rebuild_cache.dir

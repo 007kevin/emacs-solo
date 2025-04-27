@@ -34,10 +34,12 @@
 
 (use-package consult
   :ensure t
-  ;; :custom
+  :demand t ;; force loading so isearch package loads too
+ ;; :custom
   ;; (consult-preview-key "C-<return>")
   :bind
-  (("C-c j" . consult-ripgrep)
+  (("C-x b" . consult-buffer)
+   ("C-c j" . consult-ripgrep)
    ("C-c k" . consult-ripgrep-cwd))
   :config
   (defun consult-ripgrep-cwd ()
@@ -45,6 +47,7 @@
     (consult-ripgrep default-directory))
 
   (consult-customize
+   consult-buffer
    consult-ripgrep
    consult-ripgrep-cwd
    xref-find-references

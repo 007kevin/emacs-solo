@@ -1,0 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
+(use-package hide-mode-line
+  :ensure t
+  :commands hide-mode-line-mode)

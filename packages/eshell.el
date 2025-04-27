@@ -26,7 +26,17 @@
   :defer t
   :bind
   (("<f1>" . emacs-solo/shell-pop))
+  :hook ((eshell-mode . turn-on-hide-mode-line-mode)
+         (eshell-mode . emacs-solo/buffer-background-black))
   :config
+  (defun emacs-solo/buffer-background-black ()
+    "Change the background color of the current buffer for dark themes"
+    (interactive)
+    (unless (eq (frame-parameter nil 'background-mode) 'light)
+      (setq buffer-face-mode-face `(:background "black"))
+      (buffer-face-mode 1)))
+
+
   (defun eshell-here (&optional directory)
   "Go to eshell and set current directory to the buffer's directory. If already
 on eshell, go to last buffer."
