@@ -62,7 +62,7 @@
   (resize-mini-windows 'grow-only)
   (ring-bell-function #'ignore)
   (scroll-conservatively 8)
-  (scroll-margin 5)
+  (scroll-margin 0) ; changed to 0 to make precision scrolling glitch free
   (savehist-save-minibuffer-history t)    ; t is default
   (savehist-additional-variables
    '(kill-ring                            ; clipboard
