@@ -70,15 +70,15 @@
       (custom-set-faces
        `(tab-bar
          ((,c
-           :background "#232635"
+           :background "#1c1f2b"
            :foreground "#A6Accd"
-           ;; :box (:line-width 1 :color "#676E95")
+           ;;:box (:line-width 1 :color "#676E95")
            )))
        `(tab-bar-tab
          ((,c
-           ;; :background "#232635"
-           ;; :underline t
-           ;; :box (:line-width 1 :color "#676E95")
+           :background "#1c1f2b"
+           :underline t
+           ;;:box (:line-width 1 :color "#676E95")
          )))
        `(tab-bar-tab-inactive
          ((,c

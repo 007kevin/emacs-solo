@@ -10,6 +10,8 @@
   (tab-bar-new-button-show nil)
   (tab-bar-tab-hints t)
   (tab-bar-show t)
+  (tab-bar-tab-name-function (lambda () ""))
+  (tab-bar-auto-width-max '((15) 5))
   :bind
   (("M-1" . (lambda () (interactive) (tab-bar-select-or-create 1)))
    ("M-2" . (lambda () (interactive) (tab-bar-select-or-create 2)))

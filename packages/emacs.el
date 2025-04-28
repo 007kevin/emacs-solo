@@ -56,6 +56,7 @@
   (recentf-max-menu-items 15)
   (recentf-auto-cleanup (if (daemonp) 300 'never))
   (recentf-exclude (list "^/\\(?:ssh\\|su\\|sudo\\)?:"))
+  (recentf-save-file (locate-user-emacs-file "./.local/cache/recentf" "./.local/cache/.recentf"))
   (remote-file-name-inhibit-delete-by-moving-to-trash t)
   (remote-file-name-inhibit-auto-save t)
   (resize-mini-windows 'grow-only)
@@ -189,7 +190,8 @@
   (setq savehist-file (expand-file-name "history" user-cache-directory))
 
   ;; Redirect recentf
-  (setq recentf-save-file (expand-file-name "recentf" user-cache-directory));; Redirect auto-save-list
+  ;; Disabling because for some reason recentf does not seem to get written
+  ;;(setq recentf-save-file (expand-file-name "recentf" user-cache-directory));; Redirect auto-save-list
 
   ;; Redirect eshell
   (setq eshell-directory-name (expand-file-name "eshell/" user-cache-directory))

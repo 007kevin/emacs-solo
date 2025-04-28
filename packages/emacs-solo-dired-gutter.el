@@ -6,6 +6,7 @@
 ;;; Code:
 
 (use-package emacs-solo-dired-gutter
+  :if nil ;; disable loading
   :ensure nil
   :no-require t
   :defer t
