@@ -7,7 +7,7 @@
 
 (use-package js-ts-mode
   :ensure js ;; I care about js-base-mode but it is locked behind the feature "js"
-  :mode "\\.jsx?\\'"
+  :mode ("\\.jsx?\\'" "\\.js?\\'")
   :defer 't
   :custom
   (js-indent-level 2)

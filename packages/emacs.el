@@ -24,6 +24,8 @@
    ("C-x C-k RET" . nil)
    ("C-x 2" . (lambda () (interactive) (split-window-vertically) (other-window 1)))
    ("C-x 3" . (lambda () (interactive) (split-window-horizontally) (other-window 1)))
+   ("<f9>" . start-kbd-macro)
+   ("<f10>" . kmacro-end-or-call-macro)
    )
   :custom
   (ad-redefinition-action 'accept)
@@ -216,7 +218,6 @@
   (toggle-frame-maximized)
   (select-frame-set-input-focus (selected-frame))
   (global-auto-revert-mode 1)
-  (indent-tabs-mode -1)
   (recentf-mode 1)
   (repeat-mode 1)
   (savehist-mode 1)

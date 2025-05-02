@@ -11,7 +11,7 @@
   :no-require t
   :bind (("C-c g" . project-find-file))
   :init
-  (defvar emacs-solo-default-projects-folder "~/Projects"
+  (defvar emacs-solo-default-projects-folder "~/Development"
     "Default folder to search for projects.")
 
   (defvar emacs-solo-default-projects-input "**"
