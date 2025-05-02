@@ -3,26 +3,17 @@
 ;;; Code:
 
 (use-package tab-bar
-  :ensure nil
-  :defer
+  :demand t
+  :ensure t
   :custom
   (tab-bar-close-button-show nil)
   (tab-bar-new-button-show nil)
   (tab-bar-tab-hints t)
-  (tab-bar-show t)
+  (tab-bar-show nil)
   (tab-bar-tab-name-function (lambda () ""))
   (tab-bar-auto-width-max '((15) 5))
   :bind
-  (("M-1" . (lambda () (interactive) (tab-bar-select-or-create 1)))
-   ("M-2" . (lambda () (interactive) (tab-bar-select-or-create 2)))
-   ("M-3" . (lambda () (interactive) (tab-bar-select-or-create 3)))
-   ("M-4" . (lambda () (interactive) (tab-bar-select-or-create 4)))
-   ("M-5" . (lambda () (interactive) (tab-bar-select-or-create 5)))
-   ("M-6" . (lambda () (interactive) (tab-bar-select-or-create 6)))
-   ("M-7" . (lambda () (interactive) (tab-bar-select-or-create 7)))
-   ("M-8" . (lambda () (interactive) (tab-bar-select-or-create 8)))
-   ("M-9" . (lambda () (interactive) (tab-bar-select-or-create 9)))
-   ("M-0" . (lambda () (interactive) (tab-bar-select-or-create 10))))
+  (("M-2" . (lambda () (interactive) (tab-bar-select-or-create 2))))
   :config
   (defun number-to-letter (number)
     "Convert a number to its corresponding lowercase letter.
@@ -42,7 +33,7 @@
         (while (< current-tabs tab-number)
           (tab-bar-new-tab)
           ;; Open vterm in the newly created tab
-          (vterm (concat "*vterm " (number-to-letter (1+ current-tabs)) "*"))
+		  (my/vterm-tmux-here)
           (setq current-tabs (1+ current-tabs)))
         ;; Select the newly created tab
         (tab-bar-select-tab tab-number)))))

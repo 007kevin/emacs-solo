@@ -3,29 +3,28 @@
 ;;; Code:
 
 (use-package vterm
-  :after tab-bar
+  :demand t
   :ensure t
   :hook ((vterm-mode . turn-on-hide-mode-line-mode)
          (vterm-mode . emacs-solo/buffer-background-black))
   :bind
-  (:map vterm-copy-mode-map
-        ("C-g" . vterm-copy-mode-done)
-   :map vterm-mode-map
-        ("C-y" . vterm-yank)
+  (:map vterm-mode-map
+        ("M-1" . (lambda() (interactive) (tab-bar-select-tab 1)))
+		("<f1>" . kk/shell-pop)
         ("<f2>" . my/dired-jump-reuse)
         ("C-g" . vterm-send-C-g)
-        ("C-p" . (lambda () (interactive) (vterm-copy-mode) (previous-line)))
-        ("C-n" . (lambda () (interactive) (vterm-copy-mode) (next-line)))
-        ("M-1" . (lambda () (interactive) (tab-bar-select-or-create 1)))
-        ("M-2" . (lambda () (interactive) (tab-bar-select-or-create 2)))
-        ("M-3" . (lambda () (interactive) (tab-bar-select-or-create 3)))
-        ("M-4" . (lambda () (interactive) (tab-bar-select-or-create 4)))
-        ("M-5" . (lambda () (interactive) (tab-bar-select-or-create 5)))
-        ("M-6" . (lambda () (interactive) (tab-bar-select-or-create 6)))
-        ("M-7" . (lambda () (interactive) (tab-bar-select-or-create 7)))
-        ("M-8" . (lambda () (interactive) (tab-bar-select-or-create 8)))
-        ("M-9" . (lambda () (interactive) (tab-bar-select-or-create 9)))
-        ("M-0" . (lambda () (interactive) (tab-bar-select-or-create 10))))
+		("C-w" . vterm-send-C-w)
+		("C-y" . yank)
+		("M-1" . (lambda () (interactive) (vterm-send-key "2" nil t nil nil)))
+		("M-2" . (lambda () (interactive) (vterm-send-key "2" nil t nil nil)))
+		("M-3" . (lambda () (interactive) (vterm-send-key "3" nil t nil nil)))
+		("M-4" . (lambda () (interactive) (vterm-send-key "4" nil t nil nil)))
+		("M-5" . (lambda () (interactive) (vterm-send-key "5" nil t nil nil)))
+		("M-6" . (lambda () (interactive) (vterm-send-key "6" nil t nil nil)))
+		("M-7" . (lambda () (interactive) (vterm-send-key "7" nil t nil nil)))
+		("M-8" . (lambda () (interactive) (vterm-send-key "8" nil t nil nil)))
+		("M-9" . (lambda () (interactive) (vterm-send-key "9" nil t nil nil)))
+		("M-0" . (lambda () (interactive) (vterm-send-key "0" nil t nil nil))))
   :config
   (setq vterm-timer-delay nil)
   ;; https://www.reddit.com/r/emacs/comments/xyo2fo/orgmode_vterm_tmux/n
@@ -83,9 +82,12 @@ So that the call to sync will change directory to the relevant one."
 			(switch-to-buffer vterm-tmux-buffer-name)
           (let (display-buffer-alist)
 			(vterm vterm-tmux-buffer-name)
+
 			(when (not (my/vterm-in-tmux))
-              (vterm-send-string "tmux")
-              (vterm-send-return)))))))
+              (vterm-send-string "tmux new-session -A -s with_emacs")
+              (vterm-send-return))
+
+		  )))))
   )
 
 ;;; vterm.el ends here

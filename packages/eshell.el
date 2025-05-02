@@ -5,27 +5,62 @@
 
 ;;; Code:
 
+;; Eshell integration
+;; (use-package shell-pop
+;;   :ensure t
+;;   :custom
+;;   (shell-pop-window-position "full")
+;;   (shell-pop-shell-type '("eshell" "*eshell*" (lambda () (eshell))))
+;;   (shell-pop-term-shell "eshell")
+;;   :config
+;;   (defun emacs-solo/shell-pop ()
+;;     "Shell pop with cd to working dir."
+;;     (interactive)
+;;     ;; Overriding shell-pop-autocd-to-working-dir with `prefix' value.
+;;     (let ((shell-pop-autocd-to-working-dir t))
+;;       (if (string= (buffer-name) shell-pop-last-shell-buffer-name)
+;;           (shell-pop-out)
+;;         (shell-pop-up shell-pop-last-shell-buffer-index)))))
+
+;; Vterm integration
 (use-package shell-pop
   :ensure t
   :custom
   (shell-pop-window-position "full")
-  (shell-pop-shell-type '("eshell" "*eshell*" (lambda () (eshell))))
-  (shell-pop-term-shell "eshell")
+  (shell-pop-shell-type '("vterm" "*vterm*" (lambda () (vterm))))
+  (shell-pop-term-shell "vterm")
+  :hook
+  (shell-pop-in-after . kk/shell-pop-in-after-hook)
+  :bind
+  (("<f1>" . kk/shell-pop))
   :config
-  (defun emacs-solo/shell-pop ()
+  (defun kk/shell-pop ()
     "Shell pop with cd to working dir."
     (interactive)
     ;; Overriding shell-pop-autocd-to-working-dir with `prefix' value.
     (let ((shell-pop-autocd-to-working-dir t))
       (if (string= (buffer-name) shell-pop-last-shell-buffer-name)
           (shell-pop-out)
-        (shell-pop-up shell-pop-last-shell-buffer-index)))))
+        (shell-pop-up shell-pop-last-shell-buffer-index))))
+
+  (defun kk/shell-pop-in-after-hook ()
+	(my/vterm-write-default-directory)
+	(if (get-buffer vterm-tmux-buffer-name)
+		(switch-to-buffer vterm-tmux-buffer-name)
+      (let (display-buffer-alist)
+		(vterm vterm-tmux-buffer-name)
+
+		(when (not (my/vterm-in-tmux))
+          (vterm-send-string "tmux new-session -A -s with_emacs")
+          (vterm-send-return))
+		))))
+
 
 (use-package eshell
   :ensure nil
   :defer t
   :bind
-  (("<f1>" . emacs-solo/shell-pop))
+  (("<f1>" . kk/shell-pop))
   :hook ((eshell-mode . turn-on-hide-mode-line-mode)
          (eshell-mode . emacs-solo/buffer-background-black))
   :config

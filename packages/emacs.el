@@ -25,7 +25,7 @@
    ("C-x 2" . (lambda () (interactive) (split-window-vertically) (other-window 1)))
    ("C-x 3" . (lambda () (interactive) (split-window-horizontally) (other-window 1)))
    ("<f9>" . start-kbd-macro)
-   ("<f10>" . kmacro-end-or-call-macro)
+   ("<f10>" . end-kbd-macro)
    )
   :custom
   (ad-redefinition-action 'accept)
