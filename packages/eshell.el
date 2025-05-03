@@ -25,6 +25,7 @@
 ;; Vterm integration
 (use-package shell-pop
   :ensure t
+  :demand t
   :custom
   (shell-pop-window-position "full")
   (shell-pop-shell-type '("vterm" "*vterm*" (lambda () (vterm))))

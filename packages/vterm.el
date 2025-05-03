@@ -2,33 +2,24 @@
 ;;; Commentary:
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; vterm + shell-pop with numbered pop-ups          -*- lexical-binding:t -*-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package vterm
-  :demand t
   :ensure t
+  :after shell-pop
   :hook ((vterm-mode . turn-on-hide-mode-line-mode)
          (vterm-mode . emacs-solo/buffer-background-black))
-  :bind
-  (:map vterm-mode-map
-        ("M-1" . (lambda() (interactive) (tab-bar-select-tab 1)))
-		("<f1>" . kk/shell-pop)
-        ("<f2>" . my/dired-jump-reuse)
-        ("C-g" . vterm-send-C-g)
-		("C-w" . vterm-send-C-w)
-		("C-y" . yank)
-		("M-1" . (lambda () (interactive) (vterm-send-key "2" nil t nil nil)))
-		("M-2" . (lambda () (interactive) (vterm-send-key "2" nil t nil nil)))
-		("M-3" . (lambda () (interactive) (vterm-send-key "3" nil t nil nil)))
-		("M-4" . (lambda () (interactive) (vterm-send-key "4" nil t nil nil)))
-		("M-5" . (lambda () (interactive) (vterm-send-key "5" nil t nil nil)))
-		("M-6" . (lambda () (interactive) (vterm-send-key "6" nil t nil nil)))
-		("M-7" . (lambda () (interactive) (vterm-send-key "7" nil t nil nil)))
-		("M-8" . (lambda () (interactive) (vterm-send-key "8" nil t nil nil)))
-		("M-9" . (lambda () (interactive) (vterm-send-key "9" nil t nil nil)))
-		("M-0" . (lambda () (interactive) (vterm-send-key "0" nil t nil nil))))
-  :config
-  (setq vterm-timer-delay nil)
+  :preface
+  ;; -------------------------------------------------------------------
+  ;; 0. Custom
+  ;; -------------------------------------------------------------------
+
   ;; https://www.reddit.com/r/emacs/comments/xyo2fo/orgmode_vterm_tmux/n
   (setq vterm-enable-manipulate-selection-data-by-osc52 t)
+
+  (setq vterm-timer-delay nil)
 
   (defun old-version-of-vterm--get-color (index &rest args)
     "This is the old version before it was broken by commit
@@ -47,47 +38,140 @@ Re-introducing the old version fixes auto-dim-other-buffers for vterm buffers."
       nil)))
   (advice-add 'vterm--get-color :override #'old-version-of-vterm--get-color)
 
-  ;; emacs + vterm synchronization code to work with bin/sync
-  (defun get-current-directory ()
-	(expand-file-name (file-name-directory (or (buffer-file-name) default-directory))))
+  ;; ------------------------------------------------------------
+  ;; Watcher: run after `default-directory' changes
+  ;; ------------------------------------------------------------
+  (defun kk/get-current-directory ()
+	"Return the current buffer’s directory as an absolute file name.
+Falls back to `default-directory' when the buffer is not visiting a file."
+	(expand-file-name
+	 (file-name-directory (or (buffer-file-name) default-directory))))
 
-  ;; emacs + vterm synchronization code to work with bin/sync
-  (defun my/get-current-directory ()
-	(expand-file-name (file-name-directory (or (buffer-file-name) default-directory))))
+  (defun kk/vterm-write-default-directory (&optional dir)
+	"Write DIR (string) to …/.vterm-default-directory.
+When DIR is nil use the directory of the current buffer."
+	(let* ((dir  (or dir (kk/get-current-directory)))
+           (file (expand-file-name
+                  ".local/cache/.vterm-default-directory" user-emacs-directory)))
+      (make-directory (file-name-directory file) :parents)
+      (with-temp-file file
+		(insert dir "\n"))))
 
-  (defun my/vterm-write-default-directory (&optional _)
-	"Writes default-directory to `user-emacs-directory'/.vterm-default-directory.
-So that the call to sync will change directory to the relevant one."
-	(let ((vterm-file (expand-file-name ".local/cache/.vterm-default-directory" user-emacs-directory))
-          (dir (my/get-current-directory)))
-      (with-temp-file vterm-file
-        (insert dir))))
+  (defun kk/vterm--default-directory-watcher (_symbol newval operation _where)
+	"Variable watcher for `default-directory'.
+Calls `kk/vterm-write-default-directory' *after* every real SET."
+	(when (eq operation 'set)                    ; ignore let/unlet, etc.
+      ;; newval is guaranteed to be the freshly installed directory.
+      (kk/vterm-write-default-directory newval)))
 
-  (defvar vterm-tmux-buffer-name "*vterm-tmux*")
+  ;; Activate the watcher
+  (add-variable-watcher 'default-directory #'kk/vterm--default-directory-watcher)
 
-  (defun my/vterm-in-tmux ()
-	"Check if vterm buffer is running in tmux."
-	(with-current-buffer vterm-tmux-buffer-name
-	  (let ((process-environment '("TERM=screen")))
-		(string-prefix-p "screen" (terminal-name)))))
+  ;; Optional: write the file once at start-up so it exists immediately
+  (kk/vterm-write-default-directory)
 
-  (defun my/vterm-tmux-here ()
-	"Go to vterm or last buffer."
-	(interactive)
-	(if (equal major-mode 'vterm-mode)
-		(previous-buffer)
-      (progn
-		(my/vterm-write-default-directory)
-		(if (get-buffer vterm-tmux-buffer-name)
-			(switch-to-buffer vterm-tmux-buffer-name)
-          (let (display-buffer-alist)
-			(vterm vterm-tmux-buffer-name)
+  ;; -------------------------------------------------------------------
+  ;; 1. bookkeeping
+  ;; -------------------------------------------------------------------
+  (defvar kk/vterm-buffers nil
+    "Alist (DIGIT . BUFFER) of living vterm buffers.")
 
-			(when (not (my/vterm-in-tmux))
-              (vterm-send-string "tmux new-session -A -s with_emacs")
-              (vterm-send-return))
+  (defvar-local kk/vterm-number nil
+    "Digit that identifies this vterm buffer.")
 
-		  )))))
-  )
+  ;; -------------------------------------------------------------------
+  ;; 2.  header-line helper  (fixed-width fields)
+  ;; -------------------------------------------------------------------
+  (defun kk/vterm--field (n current)
+	"Return a constant-width string representing vterm N.
+CURRENT is the number of the vterm that is currently shown."
+	(if (= n current)
+		(format "[%d]" n)               ; width 3
+      (format " %d " n)))               ; “space digit space” → width 3
+
+  (defun kk/vterm-header ()
+	"Return a centred header line like \" 1  2 [3] 4 \" for vterm buffers."
+	(let* ((alive  (sort (mapcar #'car kk/vterm-buffers) #'<))
+           (current kk/vterm-number)
+           ;; build the line with constant-width fields
+           (txt    (apply #'concat (mapcar (lambda (n) (kk/vterm--field n current))
+                                           alive)))
+           ;; centre it
+           (margin (max 0 (/ (- (window-body-width) (string-width txt)) 2))))
+      (concat (propertize " " 'display `(space :align-to ,margin)) txt)))
+
+  (defun kk/vterm--header-setup ()
+    (setq-local header-line-format '(:eval (kk/vterm-header))))
+
+  (add-hook 'vterm-mode-hook #'kk/vterm--header-setup)
+
+  ;; -------------------------------------------------------------------
+  ;; 3.  create / fetch numbered vterms
+  ;; -------------------------------------------------------------------
+  (defun kk/vterm-get-or-create (n)
+    "Return vterm N, creating it when necessary."
+    (let ((buf (cdr (assoc n kk/vterm-buffers))))
+      (unless (and buf (buffer-live-p buf))
+        (setq buf (vterm (format "*vterm:%d*" n)))
+        (with-current-buffer buf
+          (setq-local kk/vterm-number n))
+        (setf (alist-get n kk/vterm-buffers) buf))
+      buf))
+
+  ;; -------------------------------------------------------------------
+  ;; 4.  toggle command
+  ;; -------------------------------------------------------------------
+  (defun kk/vterm-toggle (n)
+    "Pop to vterm N in the current window; pop back if already there."
+    (interactive "p")
+    (let ((here (current-buffer)))
+      (cond
+       ;; already in that vterm → go back
+       ((and (eq major-mode 'vterm-mode)
+             (= (or kk/vterm-number -1) n)
+             (window-parameter nil 'kk/vterm-prev))
+        (switch-to-buffer (window-parameter nil 'kk/vterm-prev)))
+       ;; otherwise show / create requested vterm
+       (t
+        (let ((buf (kk/vterm-get-or-create n)))
+          (set-window-parameter nil 'kk/vterm-prev here)
+          (switch-to-buffer buf))))))
+
+  ;; -------------------------------------------------------------------
+  ;; 5.  helper to build the nine small wrapper commands
+  ;; -------------------------------------------------------------------
+  (dotimes (i 9)
+    (let ((n (1+ i)))
+      (eval
+       `(defun ,(intern (format "kk/vterm-toggle-%d" n)) ()
+          ,(format "Toggle vterm %d." n)
+          (interactive)
+          (kk/vterm-toggle ,n)))))
+
+  ;; -------------------------------------------------------------------
+  ;; 6.  key-bindings
+  ;;     – global map *and* vterm-mode-map so they work inside vterm
+  ;; -------------------------------------------------------------------
+  :bind
+  (("M-1" . kk/vterm-toggle-1)
+   ("M-2" . kk/vterm-toggle-2)
+   ("M-3" . kk/vterm-toggle-3)
+   ("M-4" . kk/vterm-toggle-4)
+   ("M-5" . kk/vterm-toggle-5)
+   ("M-6" . kk/vterm-toggle-6)
+   ("M-7" . kk/vterm-toggle-7)
+   ("M-8" . kk/vterm-toggle-8)
+   ("M-9" . kk/vterm-toggle-9))
+  :bind
+  (:map vterm-mode-map          ; <— extra bindings only active in vterm
+        ("M-1" . kk/vterm-toggle-1)
+        ("M-2" . kk/vterm-toggle-2)
+        ("M-3" . kk/vterm-toggle-3)
+        ("M-4" . kk/vterm-toggle-4)
+        ("M-5" . kk/vterm-toggle-5)
+        ("M-6" . kk/vterm-toggle-6)
+        ("M-7" . kk/vterm-toggle-7)
+        ("M-8" . kk/vterm-toggle-8)
+        ("M-9" . kk/vterm-toggle-9)))
 
 ;;; vterm.el ends here
